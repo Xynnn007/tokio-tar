@@ -12,6 +12,18 @@ pub struct PaxExtensions<'entry> {
     data: slice::Split<'entry, u8, fn(&u8) -> bool>,
 }
 
+impl<'entry> PaxExtensions<'entry> {
+    /// Create new pax extensions iterator from the given entry data.
+    pub fn new(a: &'entry [u8]) -> Self {
+        fn is_newline(a: &u8) -> bool {
+            *a == b'\n'
+        }
+        PaxExtensions {
+            data: a.split(is_newline),
+        }
+    }
+}
+
 /// A key/value pair corresponding to a pax extension.
 pub struct PaxExtension<'entry> {
     key: &'entry [u8],
