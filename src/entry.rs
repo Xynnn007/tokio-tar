@@ -835,6 +835,7 @@ impl<R: Read + Unpin> EntryFields<R> {
                 .map(|(key, e)| (OsStr::from_bytes(key), e.value_bytes()));
 
             for (key, value) in exts {
+                println!("set {dst:?} with key {key:?} {value:?}");
                 xattr::set(dst, key, value).map_err(|e| {
                     TarError::new(
                         &format!(
